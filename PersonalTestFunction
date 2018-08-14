@@ -1,0 +1,33 @@
+setwd("specdata")
+filenames <- list.files()
+setwd('..')  
+
+column_no_NA <- function(testcolumn){    ##gives back the column with no NA
+  testcolumn[complete.cases(testcolumn)]  
+}
+
+sum_and_goodrows <- function(goodcolumn){  ##sum and no. of non-NA elements in col
+  goodsum <- sum(goodcolumn)
+  goodrows <- length(goodcolumn)
+  c(goodsum, goodrows)
+}
+
+pickfile <- function(id_number) {    ##open the file
+  file_to_find <- filenames[id_number]
+  read.csv(file_to_find)
+}
+
+pollutantmean <- function(directory, pollutant, id = 1:332) {
+  setwd(directory)
+  workingsum <- 0
+  workingrows <- 0
+  for(i in id){
+    workingfile <- pickfile(i)     ##reads each file
+    workingcolumn <- column_no_NA(workingfile[,pollutant])   
+        ##gets the column wanted minus NAs
+    workingsum <- workingsum + sum_and_goodrows(workingcolumn)[1]
+    workingrows <- workingrows + sum_and_goodrows(workingcolumn)[2]
+  }
+  setwd('..')  
+  workingsum/workingrows
+}
