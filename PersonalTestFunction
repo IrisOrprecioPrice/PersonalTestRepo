@@ -1,3 +1,5 @@
+##I have made edits to this file.
+
 setwd("specdata")
 filenames <- list.files()
 setwd('..')  
